@@ -1,11 +1,13 @@
 import Link from "next/link";
 import styles from "../styles/DoubleCard.module.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 export default function SingleCard({ item, index, size }) {
-  useEffect(() => AOS.init(), []);
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   return (
     <Link href={`/projects/${item?.slug?.current}`} key={item._id}>

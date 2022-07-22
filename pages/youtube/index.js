@@ -1,14 +1,17 @@
-import NavBar from "../../components/NavBar";
-import { useState } from "react";
+import {
+  NavBar,
+  Header,
+  Banner,
+  Videos,
+  Footer,
+  WorkTogether,
+} from "../../components";
+import { useContext } from "react";
 import Head from "next/head";
-import Header from "../../components/Header";
-import Banner from "../../components/Banner";
 import { InView } from "react-intersection-observer";
-import Videos from "../../components/Videos";
-import Footer from "../../components/Footer";
-import WorkTogether from "../../components/WorkTogether";
 import { getClient, overlayDrafts } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
+import ColorContext from "../../components/context/ColorContext";
 
 const ytQuery = groq`*[_type=='youtube'] {
     _id,
@@ -23,8 +26,7 @@ const bannerQuery = groq`*[_type=='banner'] {
         }`;
 
 export default function Youtube({ ytApi, banner }) {
-  const [color, setColor] = useState("#FFF");
-
+  const { colorWhite } = useContext(ColorContext);
   const videos = ytApi[0].ids;
 
   return (
@@ -32,20 +34,20 @@ export default function Youtube({ ytApi, banner }) {
       <Head>
         <title>JIC | YouTube</title>
       </Head>
-      <NavBar color={color} iNavRef={"2"} theme={"light"} />
+      <NavBar iNavRef={"2"} theme={"light"} />
       <Header
         img={ytApi[0].headerURL}
         title={`YOUTUBER IN\nPROGRESS`}
         home={false}
       />
       <Videos videos={videos} />
-      <Banner img={banner[0].bannerURL} />
       <InView
-        threshold="0.5"
-        onChange={(inView) => (inView ? setColor("#000") : setColor("#FFF"))}
+        rootMargin="0px 0px -90%"
+        onChange={(inView) => inView && colorWhite()}
       >
-        <WorkTogether text="Trabajemos juntos!" link="/contact" />
+        <Banner img={banner[0].bannerURL} />
       </InView>
+      <WorkTogether text="Trabajemos juntos!" link="/contact" />
       <Footer />
     </>
   );

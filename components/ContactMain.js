@@ -1,6 +1,6 @@
 import styles from "../styles/ContactMain.module.css";
 import Form from "./Form";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function ContactMain({ size }) {
   const [sent, setSent] = useState(false);
@@ -31,7 +31,7 @@ export default function ContactMain({ size }) {
             <br />
             formulario, podes
             <br />
-            enviarme un mail.{" "}
+            enviarme un mail.
           </p>
         </article>
         <article className={styles.area2}>
@@ -40,6 +40,7 @@ export default function ContactMain({ size }) {
           <article className={styles.links}>
             <a
               target="_blank"
+              rel="noreferrer"
               href="https://www.instagram.com/juanignaciocali/"
             >
               <img

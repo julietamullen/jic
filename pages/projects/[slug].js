@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { InView } from "react-intersection-observer";
 import { getClient, overlayDrafts } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
@@ -12,6 +12,8 @@ import Head from "next/head";
 import MoreProjects from "../../components/MoreProjects";
 import Description from "../../components/Description";
 import Backstage from "../../components/Backstage";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import ColorContext from "../../components/context/ColorContext";
 
 const projectQuery = groq`*[ _type == 'project' ]{
   _id,
@@ -47,32 +49,6 @@ export default function Details({ pageSlug, projects }) {
   const [moreProjects, setMoreProjects] = useState();
 
   const size = useWindowSize();
-  function useWindowSize() {
-    // Hook para detectar el tamaño de pantalla.
-    const [windowSize, setWindowSize] = useState({
-      // Inicializar el estado con altura y anchura undefined así cliente y servidor están coordinados
-      width: undefined,
-      height: undefined,
-    });
-
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        // Este código se ejecuta únicamente del lado del cliente
-        function handleResize() {
-          // Función que se ejecuta al cambiar el tamaño de la pantalla
-          setWindowSize({
-            // Cambiar el estado del tamaño de pantalla
-            width: window.innerWidth,
-            height: window.innerHeight,
-          });
-        }
-        window.addEventListener("resize", handleResize); // Agregar event listener
-        handleResize(); // Cuando cambia el tamaño de la pantalla, el handler se ejecuta automáticamente
-        return () => window.removeEventListener("resize", handleResize); // Sacar el event listener
-      }
-    }, []);
-    return windowSize;
-  }
 
   function getRandom(arr, n) {
     // Función para conseguir dos proyectos al azar que se mostrarán al final de la página
@@ -89,7 +65,10 @@ export default function Details({ pageSlug, projects }) {
     setMoreProjects(result);
   }
 
-  useEffect(() => getRandom(clearProjects, 2), [pageSlug]);
+  useEffect(() => {
+    getRandom(clearProjects, 2);
+  }, [pageSlug]);
+  const { colorBlack, colorWhite } = useContext(ColorContext);
   return (
     <>
       <Head>
@@ -97,7 +76,10 @@ export default function Details({ pageSlug, projects }) {
       </Head>
       <main className={styles.main}>
         <NavBar color={color} iNavRef={"1"} theme={"dark"} />
-        <InView onChange={(inView) => inView && setColor("#000")}>
+        <InView
+          onChange={(InView) => InView && colorBlack()}
+          rootMargin="0px 0px -90%"
+        >
           <ProjectHeader
             brand={thisProject[0].brand}
             title={thisProject[0].subtitle}
@@ -121,8 +103,8 @@ export default function Details({ pageSlug, projects }) {
           </div>
         )}
         <InView
-          threshold="0.3"
-          onChange={(inView) => inView && setColor("#000")}
+          onChange={(InView) => InView && colorBlack()}
+          rootMargin="0px 0px -90%"
         >
           {thisProject[0].description != null && (
             <Description
@@ -132,24 +114,24 @@ export default function Details({ pageSlug, projects }) {
           )}
         </InView>
         <InView
-          threshold="0.3"
-          onChange={(inView) => inView && setColor("#FFF")}
+          onChange={(InView) => InView && colorWhite()}
+          rootMargin="0px 0px -90%"
         >
           {thisProject[0].screenshots != null && (
             <Screenshots pictures={screenshots} />
           )}
         </InView>
         <InView
-          threshold="0.3"
-          onChange={(inView) => inView && setColor("#000")}
+          onChange={(InView) => InView && colorBlack()}
+          rootMargin="0px 0px -90%"
         >
           {thisProject[0].process != null && (
             <Description text={thisProject[0].process} title="El proceso" />
           )}
         </InView>
         <InView
-          threshold="0.3"
-          onChange={(inView) => inView && setColor("#FFF")}
+          onChange={(InView) => InView && colorWhite()}
+          rootMargin="0px 0px -90%"
         >
           {thisProject[0].processPics != null && (
             <Screenshots
@@ -169,8 +151,8 @@ export default function Details({ pageSlug, projects }) {
         )}
 
         <InView
-          threshold="0.3"
-          onChange={(inView) => inView && setColor("#FFF")}
+          onChange={(InView) => InView && colorWhite()}
+          rootMargin="0px 0px -90%"
         >
           {thisProject[0].credits && (
             <Description
@@ -181,8 +163,8 @@ export default function Details({ pageSlug, projects }) {
           )}
         </InView>
         <InView
-          threshold="0.3"
-          onChange={(inView) => inView && setColor("#000")}
+          onChange={(InView) => InView && colorBlack()}
+          rootMargin="0px 0px -90%"
         >
           <MoreProjects moreProjects={moreProjects} size={size} />
         </InView>
@@ -195,7 +177,6 @@ export default function Details({ pageSlug, projects }) {
 export const getServerSideProps = async (pageContext) => {
   const pageSlug = pageContext.query.slug;
   const projects = overlayDrafts(await getClient().fetch(projectQuery));
-  console.log("projects: ", projects);
   if (!pageSlug) {
     return {
       notFound: true,

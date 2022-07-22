@@ -1,10 +1,11 @@
 import Layout from "../components/Layout";
 import "../styles/globals.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useRouter } from "next/router";
 import * as gtag from "../lib/gtag";
+import ColorContext from "../components/context/ColorContext";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -30,10 +31,29 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router.events]);
 
+  function AppProvider({ children }) {
+    const [color, setColor] = useState("#fff");
+
+    const colorWhite = () => setColor("#fff");
+    const colorBlack = () => setColor("#000");
+
+    const obj = {
+      color,
+      colorWhite,
+      colorBlack,
+    };
+
+    return (
+      <ColorContext.Provider value={obj}>{children}</ColorContext.Provider>
+    );
+  }
+
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <AppProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AppProvider>
   );
 }
 

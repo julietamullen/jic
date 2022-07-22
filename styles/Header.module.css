@@ -24,6 +24,16 @@
   position: relative;
 }
 
+.header video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
 .elements > h1 {
   font-weight: 700;
   font-size: 40px;
@@ -45,21 +55,14 @@
   z-index: 1;
   padding: 0.5rem 2.5rem 0.5rem 2.5rem;
   color: #000;
-  background-color: white;
-  border: 1px solid white;
-  border-radius: 50px;
+  background-color: #ffcc00;
+  border-radius: 5px;
   transition: all 0.5s ease;
 }
 
 .elements > a:hover {
-  background-color: transparent;
-  color: #fff;
-}
-
-.elements > h1,
-.elements > h2,
-.elements > a {
-  margin-left: -35rem;
+  background-color: white;
+  color: black;
 }
 
 .wrapper > .header > section > h1 {
@@ -107,6 +110,7 @@
     font-size: 16px;
   }
   .elements > a {
+    width: -moz-fit-content;
     width: fit-content;
     align-self: flex-end;
     margin: auto auto 0 auto;

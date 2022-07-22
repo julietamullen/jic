@@ -1,16 +1,19 @@
 import Head from "next/head";
-import NavBar from "../../components/NavBar";
-import { useState } from "react";
-import AboutHeader from "../../components/AboutHeader";
-import TextSlider from "../../components/TextSlider";
-import PhGrid from "../../components/PhGrid";
-import WorkTogether from "../../components/WorkTogether";
-import Footer from "../../components/Footer";
+import {
+  AboutHeader,
+  TextSlider,
+  PhGrid,
+  WorkTogether,
+  Footer,
+  Presentation,
+  AboutVideo,
+  NavBar,
+} from "../../components";
 import { InView } from "react-intersection-observer";
 import { getClient, overlayDrafts } from "../../lib/sanity.server";
 import { groq } from "next-sanity";
-import Presentation from "../../components/Presentation";
-import AboutVideo from "../../components/AboutVideo";
+import { useContext } from "react";
+import ColorContext from "../../components/context/ColorContext";
 
 const gridQuery = groq`*[_type=='phGrid'] {_id, 'assets': pics[].asset->url}`;
 
@@ -32,14 +35,13 @@ const manifiestoQuery = groq`*[_type=='frase'] {
       } | order(orden asc)`;
 
 export default function About({ pics, aboutApi, slidesA }) {
-  const [color, setColor] = useState("#FFF");
-
+  const { colorBlack, colorWhite } = useContext(ColorContext);
   return (
     <>
       <Head>
         <title>JIC | Sobre Mi</title>
       </Head>
-      <NavBar color={color} iNavRef={"4"} theme={"light"} />
+      <NavBar iNavRef={"4"} theme={"light"} />
       <AboutHeader title="SOBRE MI" img={aboutApi[0].headerURL} />
       <Presentation img={aboutApi[0].personalImgURL} text={aboutApi[0].text} />
       {aboutApi[0].videoID ? (
@@ -51,8 +53,8 @@ export default function About({ pics, aboutApi, slidesA }) {
       <PhGrid pictures={pics[0].assets} />
       <TextSlider slidesA={slidesA} />
       <InView
-        threshold="0.5"
-        onChange={(inView) => (inView ? setColor("#000") : setColor("#FFF"))}
+        rootMargin="0px 0px -90%"
+        onChange={(InView) => (InView ? colorBlack() : colorWhite())}
       >
         <WorkTogether text="Trabajemos juntos!" link="/contact" />
       </InView>

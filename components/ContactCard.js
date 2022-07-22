@@ -19,7 +19,11 @@ export default function ContactCard({ img }) {
           <h2>@juanignaciocali</h2>
           <h3>Contactate conmigo!</h3>
           <article className={styles.links}>
-            <a target="_blank" href="mailto:juanignaciocali@gmail.com">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="mailto:juanignaciocali@gmail.com"
+            >
               <img
                 src="/img/gmail.svg"
                 alt="Contactame por email"
@@ -28,6 +32,7 @@ export default function ContactCard({ img }) {
             </a>
             <a
               target="_blank"
+              rel="noreferrer"
               href="https://www.instagram.com/juanignaciocali/"
             >
               <img

@@ -1,0 +1,48 @@
+.homeSection {
+  display: flex;
+  position: relative;
+  width: 100vw;
+  height: 60vh;
+}
+
+.button {
+  height: 20%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+.content {
+  position: absolute;
+  z-index: 1;
+}
+
+.centerPosition {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+.rightPosition {
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  transform: translateX(-80%) translateY(-50%);
+}
+.leftPosition {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateX(-10%) translateY(-50%);
+}
+
+.podcast{
+  color: #fff;
+}
+
+.youtube {
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+  font-size: 57px;
+  font-weight: 400;
+}

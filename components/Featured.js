@@ -1,5 +1,4 @@
 import styles from "../styles/Featured.module.css";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import SingleCard from "../components/SingleCard";
 import DoubleCard from "../components/DoubleCard";

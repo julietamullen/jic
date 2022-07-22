@@ -1,0 +1,17 @@
+.youtubeIcon,
+.instagramIcon,
+.spotifyIcon {
+  fill: white;
+  transition: fill 500ms;
+}
+.youtubeIcon:hover {
+  fill: #ffcc00;
+}
+
+.spotifyIcon:hover {
+  fill: #ffcc00;
+}
+
+.instagramIcon:hover {
+  fill: #ffcc00;
+}
